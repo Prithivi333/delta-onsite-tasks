@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <title>Text Editor</title>
+  <style>
+      body{
+          padding: 2px;
+      }
+      button{
+          width: 100px;
+          height:auto;
+      }
+      label{
+          font: message-box;
+      }
+      #workarea{
+          border: solid 2px black;
+          overflow: auto;
+          position: absolute;
+          height: 50%;
+          width: 100%;
+      }
+      #toolbar{
+          border: dashed 1.5px brown ;
+          padding: 5px;
+          display: flex;
+      }
+      #toolbar div{
+          flex: 1;
+      }
+      #heading{
+          text-align: center;
+          font-size: 20px;
+      }
+      [contentEditable=true]:empty:not(:focus):before{
+        content:attr(data-text);
+        color: rgba(26, 14, 197, 0.5);
+}
+  </style>
+</head>
+
+<body>
+    <div id="heading"><h5>SIMPLE TEXT EDITOR</h5></div>
+    <div id="toolbar">
+        <div>
+        <button id="bold" value="f"><b>BOLD</b></button>
+        </div>
+        <div>
+        <button id="italic" value="f"><i>ITALIC</i></button>
+        </div>
+        <div>
+        <button id="undoMove" onclick="undo()">Undo</button>
+        </div>
+        <div>
+        <button id="redoMove" onclick="redo()">Redo</button>
+        </div>
+        <div>
+        <label for="fontSize">FontSize:</label>
+        <select id="fontSize" onclick="changeSize()">
+            <option value="1">1</option>      
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        <div>
+          <label for="fcolor">FontColor:</label>
+          <input type="color" id="fcolor" onchange="chooseColor()">
+        </div>
+        <div>
+          <label for="font">FontStyle:</label>
+          <select id="font" class="input"  onchange="changeFont()">
+            <option value="Arial">Arial</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Sans serif">Sans serif</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Garamond">Garamond</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Arial Black">Arial Black</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+          </select>
+          </div>
+    </div>
+    <hr>
+    <div id="workarea" contenteditable="true" data-text="Workspace..."></div>
+</body>
+<script>
+    var wrk=document.getElementById('workarea');
+    var tools=document.getElementById('toolbar');
+    console.log(window.innerHeight);
+    wrk.style.width=window.innerWidth;
+    wrk.style.height=750;
+    tools.style.width=window.innerWidth;
+    tools.style.height=window.innerHeight/10;
+    document.getElementById('bold').onclick=function () {
+        if(document.getElementById('bold').value=='f'){
+            document.getElementById('bold').value='t';
+            document.getElementById('bold').innerHTML='<b>BOLD &#10004;</b>';
+            document.execCommand('bold',false);
+        }
+        else if(document.getElementById('bold').value=='t'){
+            document.getElementById('bold').value='f';
+            document.getElementById('bold').innerHTML='<b>BOLD</b>';
+            document.execCommand('bold',false);
+        }
+    }
+    document.getElementById('italic').onclick=function () {
+        if(document.getElementById('italic').value=='f'){
+            document.getElementById('italic').value='t';
+            document.getElementById('italic').innerHTML='<i>ITALIC &#10004;</i>';
+            document.execCommand('italic',false);
+        }
+        else if(document.getElementById('italic').value=='t'){
+            document.getElementById('italic').value='f';
+            document.getElementById('italic').innerHTML='<i>ITALIC</i>';
+            document.execCommand('italic',false);
+        }
+    }
+    function changeSize(){
+      var mysize = document.getElementById("fontSize").value;
+      document.execCommand('fontSize', false, mysize);
+    }
+    function chooseColor(){
+      var color = document.getElementById("fcolor").value;
+      document.execCommand('foreColor', false, color);
+    }
+    function undo(){
+        document.execCommand('undo',false);
+    }
+    function redo(){
+        document.execCommand('redo',false);
+    }
+    function changeFont(){
+      var fstyle = document.getElementById("font").value;
+      document.execCommand('fontName', false, fstyle);
+    }
+</script>
